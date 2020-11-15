@@ -65,6 +65,7 @@ class SemScholarCorpusFlow(FlowSpec):
         self.chunk_dicts =[ self.extract_individual_chunk(i) for i in  s3_paths]
         self.next(self.join_citations)
     
+    @batch(cpu=16,memory=164000)
     @step
     def join_citations(self,inputs):
         self.useful_ids = set()
