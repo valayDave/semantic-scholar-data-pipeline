@@ -28,6 +28,9 @@ def get_ctndf_from_gz(ctn_file,doc_filter=None):
 
 
 class SemScholarCorpusFlow(FlowSpec):
+    '''
+    Flow Requires `S3_TAR_DATA_PATH` to be set as some Path of S3 From which the semantic scholar Dataset will be Cleaned/Parsed For a Citation Graph. 
+    '''
     sample = Parameter('sample',default=None,type=int,help=f'Use a sample of TAR Balls from {S3_TAR_DATA_PATH}')
 
     chunk_size = Parameter('chunksize',default=2,type=int,help='Number of the Chunks To Process in Parallel for individual Foreach')
