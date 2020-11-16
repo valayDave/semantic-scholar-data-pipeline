@@ -1,0 +1,3 @@
+[submodule "cso-classifier"]
+	path = cso-classifier
+	url = https://github.com/angelosalatino/cso-classifier.git
