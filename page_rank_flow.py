@@ -22,7 +22,7 @@ class CSPageRankFinder(FlowSpec):
 
     Use For Calculating Page Rank Later. 
     '''
-    tolerence = Parameter('tolerence',default=1e-6,help='Error Tolerance for Page Conversion')
+    tolerence = Parameter('tolerence',default=1e-8,help='Error Tolerance for Page Conversion')
 
     max_iter = Parameter('max_iter',default=100,help='Max Iterations to Run')
     
@@ -40,7 +40,7 @@ class CSPageRankFinder(FlowSpec):
             G,tol=self.tolerence,max_iter=self.max_iter
         )
         self.error_log = err_log
-        self.rank_save_path = self.save_json(rank_dict,save_name=f'page-rank-{current.run_id}')
+        self.rank_save_path = self.save_json(rank_dict,save_name=f'page-rank-{current.run_id}.json')
         print(f"Saved Rank at {self.rank_save_path}")
         self.next(self.end)
      

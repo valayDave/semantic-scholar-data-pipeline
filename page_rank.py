@@ -103,13 +103,10 @@ def pagerank(
     if len(G) == 0:
         return {}
 
-    if not G.is_directed():
-        D = G.to_directed()
-    else:
-        D = G
+    W = G
 
     # Create a copy in (right) stochastic form
-    W = nx.stochastic_graph(D, weight=weight)
+    W = nx.stochastic_graph(W, weight=weight,copy=False)
     N = W.number_of_nodes()
 
     # Choose fixed starting vector if not given

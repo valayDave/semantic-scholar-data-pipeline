@@ -2,8 +2,8 @@ from metaflow import FlowSpec,step,Parameter,conda,batch,current
 import os 
 import mf_utils
 import json
-MAX_WORKERS = 16
-MAX_MEMORY = 128000
+MAX_WORKERS = 8
+MAX_MEMORY = 16000
 
 SAVE_PROCESSED_DATA_PATH =os.path.join(mf_utils.data_path,'processed_data')
 PAGE_RANK_PATH = os.path.join(SAVE_PROCESSED_DATA_PATH,'CSPageRankFinder') 
@@ -28,20 +28,20 @@ class PageRankCollateFlow(FlowSpec):
 
     sample = Parameter('sample',default=None,type=int,help=f'Use a sample of for data in each df')
     
-    @batch(cpu=16,memory=256000)
+    @batch(cpu=MAX_WORKERS,memory=MAX_MEMORY)
     @step
     def start(self):
         present_folders = mf_utils.list_folders(f'processed_data/{self.__class__.__name__}')
         s3_paths = [os.path.join(f,'ontology_processed.csv') for f in mf_utils.list_folders('processed_data/CSOntologyClassificationFlow',with_full_path=False) if f not in present_folders]
         if self.sample is not None:
             import random 
-            s3_path = random.sample(s3_paths,sample)
+            s3_paths = random.sample(s3_paths,self.sample)
         self.save_df_paths = []
-        self.collate_dfs_and_rank(s3_path)
+        self.collate_dfs_and_rank(s3_paths)
         self.next(self.end)
 
     def collate_dfs_and_rank(self,s3_paths):
-        page_rank_json = self.load_json('citation_network_graph.json',PAGE_RANK_PATH)
+        page_rank_json = self.load_json('page-rank-299',PAGE_RANK_PATH)
         def collate_pr(idv,prjs):
             if idv in prjs:
                 return prjs[idv]
@@ -101,9 +101,7 @@ class PageRankCollateFlow(FlowSpec):
                     continue
                 yield (df,pth)
             n+=1
-            if self.max_chunks is not None:
-                if self.max_chunks < n:
-                    return    
+            
 
     @step
     def end(self):
