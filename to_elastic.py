@@ -31,6 +31,7 @@ def sync_data():
     s3_paths = [os.path.join(f,'ontology_processed.csv') for f in present_folders]
     for csv_df,pth in load_main_csvs(s3_paths):
         csv_df = clean_df(csv_df)
+        documents = csv_df.to_dict(orient='records')
         # data_docs = [
         #     {
         #         "_index": "sem-scholar-index",
@@ -40,7 +41,7 @@ def sync_data():
         #     }
         #     for _,row in csv_df.iterrows()
         # ]
-        helpers.bulk(es, doc_generator(csv_df),chunk_size=2000)
+        helpers.bulk(es, documents,chunk_size=2000)
         print(f"Finished Flushing Data For {pth}")
         break
 
