@@ -61,6 +61,7 @@ def sync_data():
 
 
 def clean_df(df):
+    import numpy as np
     def parse_rows(x):
         x['ontology_enhanced'] = json.loads(x['ontology_enhanced'].replace("'",'"'))
         x['ontology_semantic'] = json.loads(x['ontology_semantic'].replace("'",'"'))
@@ -80,10 +81,15 @@ def clean_df(df):
             x['fieldsOfStudy'] = []
         x['inCitations'] = json.loads(x['inCitations'].replace("'",'"'))
         x['outCitations'] = json.loads(x['outCitations'].replace("'",'"'))
+        try:
+            x['pdfUrls'] = json.loads(x['pdfUrls'].replace("'",'"'))
+        except:
+            x['pdfUrls'] = []
         return x
     df['_id'] = df['id']
-    df = df.apply(lambda x:parse_rows(x),axis=1)
-    return df
+    df1 = df.replace(np.nan, '', regex=True)
+    df1 = df1.apply(lambda x:parse_rows(x),axis=1)
+    return df1
         
 
 def load_main_csvs(s3_paths):
