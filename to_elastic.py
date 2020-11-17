@@ -17,7 +17,7 @@ def doc_generator(df):
                 "_index": 'sem-scholar-index',
                 "_type": "_doc",
                 "_id" : f"{document['id']}",
-                "_source": json.loads(document.to_json()),
+                "_source": document.to_dict(),
             }
     raise StopIteration
 
