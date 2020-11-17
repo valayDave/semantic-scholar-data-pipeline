@@ -28,7 +28,9 @@ def sync_data():
             }
             for _,row in csv_df.iterrows()
         ]
-        helpers.bulk(es, data_docs,chunk_size=2000)
+        helpers.bulk(es, data_docs,chunk_size=2000,headers={
+                "Content-Type": "application/json"
+            })
         print(f"Finished Flushing Data For {pth}")
         break
 
