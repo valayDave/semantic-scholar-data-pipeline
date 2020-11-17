@@ -6,7 +6,7 @@ MAX_MEMORY = 16000
 import elasticsearch
 
 SAVE_PROCESSED_DATA_PATH =os.path.join(mf_utils.data_path,'processed_data')
-ONTOLOGY_CSV_PATH = os.path.join(SAVE_PROCESSED_DATA_PATH,'CSPageRankFinder') 
+ONTOLOGY_CSV_PATH = os.path.join(SAVE_PROCESSED_DATA_PATH,'PageRankCollateFlow') 
 
 
 def sync_data():
