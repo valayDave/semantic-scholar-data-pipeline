@@ -27,7 +27,7 @@ ONTOLOGY_CSV_PATH = os.path.join(SAVE_PROCESSED_DATA_PATH,'PageRankCollateFlow')
 def rec_to_actions(df):
     import json
     for record in df.to_dict(orient="records"):
-        yield ('{ "index" : { "_index" : "%s", "_type" : "%s" }}'% (INDEX, TYPE))
+        yield ('{ "index" : { "_index" : "%s" }}'% (INDEX))
         yield (json.dumps(record, default=int))
 
 def sync_data():
