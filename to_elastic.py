@@ -44,13 +44,13 @@ def sync_data():
             {
                 '_op_type': 'index',
                 '_index': INDEX,
-                '_type': '_doc',
+                '_type': 'doc',
                 '_id': j['id'],
                 '_source':j.to_dict(),
             }
             for _,j in csv_df.iterrows()
         ]
-        response = helpers.bulk(es,actions,chunk_size=100,index=INDEX, doc_type='doc',stats_only=True )
+        response = helpers.bulk(es,actions,chunk_size=100,index=INDEX, doc_type='doc',stats_only=True,refresh=True )
         print(f"Finished Flushing Data For {pth}")
         break
 
