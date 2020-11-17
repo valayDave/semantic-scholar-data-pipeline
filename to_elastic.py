@@ -30,6 +30,7 @@ def sync_data():
         ]
         helpers.bulk(es, data_docs,chunksize=2000)
         print(f"Finished Flushing Data For {pth}")
+        break
 
 
 def clean_df(df):
@@ -57,7 +58,7 @@ def clean_df(df):
     return df
         
 
-def load_main_csvs(self,s3_paths):
+def load_main_csvs(s3_paths):
     from metaflow import S3
     import pandas
 
