@@ -11,6 +11,29 @@ import logging
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 DATEFORMAT = '%Y-%m-%d-%H-%M-%S'
 
+IGNORE_PATHS = ['s2-corpus-001',
+'s2-corpus-002',
+'s2-corpus-004',
+'s2-corpus-006',
+'s2-corpus-007',
+'s2-corpus-008',
+'s2-corpus-009',
+'s2-corpus-010',
+'s2-corpus-011',
+'s2-corpus-012',
+'s2-corpus-013',
+'s2-corpus-014',
+'s2-corpus-015',
+'s2-corpus-016',
+'s2-corpus-017',
+'s2-corpus-018',
+'s2-corpus-020',
+'s2-corpus-021',
+'s2-corpus-022',
+'s2-corpus-023',
+'s2-corpus-024',
+'s2-corpus-026',
+'s2-corpus-027',]
 
 def create_logger(logger_name:str,level=logging.INFO):
     custom_logger = logging.getLogger(logger_name)
@@ -54,7 +77,7 @@ def sync_data():
     es = Elasticsearch(http_compress=True)
 
     present_folders = mf_utils.list_folders(f'processed_data/PageRankCollateFlow')
-    s3_paths = [os.path.join(f,'ontology_processed.csv') for f in present_folders]
+    s3_paths = [os.path.join(f,'ontology_processed.csv') for f in present_folders if f not in IGNORE_PATHS]
     for csv_df,pth in load_main_csvs(s3_paths):
         csv_df = clean_df(csv_df)
         actions = [
@@ -116,7 +139,7 @@ def clean_df(df):
     df1 = df1.apply(lambda x:parse_rows(x),axis=1)
 
     return df1
-        
+
 
 def load_main_csvs(s3_paths):
     from metaflow import S3
