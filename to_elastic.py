@@ -7,7 +7,7 @@ from elasticsearch import Elasticsearch
 from elasticsearch import helpers
 
 
-INDEX="sem-scholar-index-2"
+INDEX="sem-scholar-index-3"
 TYPE= "record"
 
 SAVE_PROCESSED_DATA_PATH =os.path.join(mf_utils.data_path,'processed_data')
@@ -56,8 +56,8 @@ def sync_data():
         #     # print(j.to_dict())
         #     es.index(index=INDEX,doc_type='_doc',id=_id,body=j.to_dict())
 
-        print(f"Finished Flushing Data For {pth}")
-        break
+        # print(f"Finished Flushing Data For {pth}")
+        # break
 
 
 def clean_df(df):
