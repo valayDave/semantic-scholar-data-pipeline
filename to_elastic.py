@@ -41,7 +41,7 @@ def sync_data():
         #     }
         #     for _,row in csv_df.iterrows()
         # ]
-        helpers.bulk(es, documents,chunk_size=2000)
+        helpers.bulk(es, documents, index= "sem-scholar-index",chunk_size=2000,stats_only=True,)
         print(f"Finished Flushing Data For {pth}")
         break
 
@@ -67,6 +67,7 @@ def clean_df(df):
         x['inCitations'] = json.loads(x['inCitations'].replace("'",'"'))
         x['outCitations'] = json.loads(x['outCitations'].replace("'",'"'))
         return x
+    df['_id'] = df['id']
     df = df.apply(lambda x:parse_rows(x),axis=1)
     return df
         
