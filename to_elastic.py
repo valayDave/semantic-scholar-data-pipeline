@@ -50,7 +50,7 @@ def sync_data():
             }
             for _,j in csv_df.iterrows()
         ]
-        success,_ = helpers.bulk(es,actions,chunk_size=100,index=INDEX, doc_type='doc',stats_only=True,refresh=True )
+        success,_ = helpers.bulk(es,actions,chunk_size=4000,index=INDEX, doc_type='doc',stats_only=True,refresh=True )
         # for _,j in csv_df.iterrows():
         #     _id = j['id']
         #     # print(j.to_dict())
