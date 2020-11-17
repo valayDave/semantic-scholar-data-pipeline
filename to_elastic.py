@@ -86,7 +86,6 @@ def clean_df(df):
         except:
             x['pdfUrls'] = []
         return x
-    df['_id'] = df['id']
     df1 = df.replace(np.nan, '', regex=True)
     df1 = df1.apply(lambda x:parse_rows(x),axis=1)
     return df1
