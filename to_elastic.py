@@ -24,7 +24,7 @@ def sync_data():
                 "_index": "sem-scholar-index",
                 "_type": "sem-scholar-papers",
                 "_id": row['id'],
-                "_source": row.to_json(axis=1)
+                "_source": row.to_json()
             }
             for _,row in csv_df.iterrows()
         ]
