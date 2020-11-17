@@ -67,7 +67,7 @@ def sync_data():
             }
             for _,j in csv_df.iterrows()
         ]
-        success,_ = helpers.bulk(es,actions,chunk_size=1000,index=INDEX, doc_type='doc',stats_only=True,refresh=True )
+        success,_ = helpers.bulk(es,actions,chunk_size=500,index=INDEX, doc_type='doc',stats_only=True,refresh=True )
         logger.info(f"Finished Flushing Data For {pth}")
         # for _,j in csv_df.iterrows():
         #     _id = j['id']
