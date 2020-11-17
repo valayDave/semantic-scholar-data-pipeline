@@ -42,6 +42,7 @@ def sync_data():
         csv_df = clean_df(csv_df)
         actions = [
             {
+                '_op_type': 'index',
                 '_index': INDEX,
                 '_type': '_doc',
                 '_id': j['id'],
