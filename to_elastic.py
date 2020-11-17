@@ -28,7 +28,7 @@ def sync_data():
             }
             for _,row in csv_df.iterrows()
         ]
-        helpers.bulk(es, data_docs,chunksize=2000)
+        helpers.bulk(es, data_docs,chunk_size=2000)
         print(f"Finished Flushing Data For {pth}")
         break
 
