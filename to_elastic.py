@@ -46,7 +46,7 @@ def sync_data():
                 '_index': INDEX,
                 '_type': 'doc',
                 '_id': j['id'],
-                '_source':j.to_dict(),
+                **j.to_dict()
             }
             for _,j in csv_df.iterrows()
         ]
