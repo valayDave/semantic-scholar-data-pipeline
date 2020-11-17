@@ -11,7 +11,7 @@ import logging
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 DATEFORMAT = '%Y-%m-%d-%H-%M-%S'
 
-IGNORE_PATHS = ['s2-corpus-001',
+IGNORE_PATHS = ['s2-corpus-000','s2-corpus-001',
 's2-corpus-002',
 's2-corpus-004',
 's2-corpus-006',
