@@ -85,6 +85,7 @@ def clean_df(df):
             x['pdfUrls'] = json.loads(x['pdfUrls'].replace("'",'"'))
         except:
             x['pdfUrls'] = []
+        x['page_rank'] = x['page_rank'] * 10**8
         return x
     df1 = df.replace(np.nan, '', regex=True)
     df1 = df1[['id','entities', 'magId',
