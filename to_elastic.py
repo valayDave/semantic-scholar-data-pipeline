@@ -73,7 +73,26 @@ IGNORE_PATHS = [
  's2-corpus-069',
  's2-corpus-070',
  's2-corpus-071',
- 's2-corpus-073',]
+ 's2-corpus-073',
+ 's2-corpus-075',
+ 's2-corpus-076',
+ 's2-corpus-077',
+ 's2-corpus-078',
+ 's2-corpus-079',
+ 's2-corpus-080',
+ 's2-corpus-081',
+ 's2-corpus-082',
+ 's2-corpus-083',
+ 's2-corpus-084',
+ 's2-corpus-086',
+ 's2-corpus-087',
+ 's2-corpus-088',
+ 's2-corpus-089',
+ 's2-corpus-090',
+ 's2-corpus-091',
+ 's2-corpus-092',
+ 's2-corpus-093',
+ ]
 
 def create_logger(logger_name:str,level=logging.INFO):
     custom_logger = logging.getLogger(logger_name)
