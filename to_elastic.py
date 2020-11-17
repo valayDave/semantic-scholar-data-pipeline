@@ -3,34 +3,44 @@ import mf_utils
 import json
 MAX_WORKERS = 8
 MAX_MEMORY = 16000
-import elasticsearch
+from elasticsearch import Elasticsearch
+from elasticsearch import helpers
+
 
 SAVE_PROCESSED_DATA_PATH =os.path.join(mf_utils.data_path,'processed_data')
 ONTOLOGY_CSV_PATH = os.path.join(SAVE_PROCESSED_DATA_PATH,'PageRankCollateFlow') 
 
+def doc_generator(df):
+    df_iter = df.iterrows()
+    for index, document in df_iter:
+        yield {
+                "_index": 'sem-scholar-index',
+                "_type": "_doc",
+                "_id" : f"{document['id']}",
+                "_source": json.loads(document.to_json()),
+            }
+    raise StopIteration
 
 def sync_data():
     from elasticsearch import Elasticsearch
     from elasticsearch import helpers
 
-    es = Elasticsearch()
+    es = Elasticsearch(http_compress=True)
 
     present_folders = mf_utils.list_folders(f'processed_data/PageRankCollateFlow')
     s3_paths = [os.path.join(f,'ontology_processed.csv') for f in present_folders]
     for csv_df,pth in load_main_csvs(s3_paths):
         csv_df = clean_df(csv_df)
-        data_docs = [
-            {
-                "_index": "sem-scholar-index",
-                "_type": "sem-scholar-papers",
-                "_id": row['id'],
-                "_source": row.to_json()
-            }
-            for _,row in csv_df.iterrows()
-        ]
-        helpers.bulk(es, data_docs,chunk_size=2000,headers={
-                "Content-Type": "application/json"
-            })
+        # data_docs = [
+        #     {
+        #         "_index": "sem-scholar-index",
+        #         "_type": "sem-scholar-papers",
+        #         "_id": row['id'],
+        #         "_source": row.to_json()
+        #     }
+        #     for _,row in csv_df.iterrows()
+        # ]
+        helpers.bulk(es, doc_generator(csv_df),chunk_size=2000)
         print(f"Finished Flushing Data For {pth}")
         break
 
