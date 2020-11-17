@@ -6,6 +6,22 @@ MAX_MEMORY = 16000
 from elasticsearch import Elasticsearch
 from elasticsearch import helpers
 
+import logging
+
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+DATEFORMAT = '%Y-%m-%d-%H-%M-%S'
+
+
+def create_logger(logger_name:str,level=logging.INFO):
+    custom_logger = logging.getLogger(logger_name)
+    ch1 = logging.StreamHandler()
+    ch1.setLevel(level)
+    ch1.setFormatter(formatter)
+    custom_logger.addHandler(ch1)
+    custom_logger.setLevel(level)    
+    return custom_logger
+    
+
 
 INDEX="sem-scholar-index-3"
 TYPE= "record"
@@ -31,6 +47,7 @@ def rec_to_actions(df):
         yield (json.dumps(record))
 
 def sync_data():
+    logger = create_logger('ES_Import_Logger')
     from elasticsearch import Elasticsearch
     from elasticsearch import helpers
 
@@ -51,6 +68,7 @@ def sync_data():
             for _,j in csv_df.iterrows()
         ]
         success,_ = helpers.bulk(es,actions,chunk_size=4000,index=INDEX, doc_type='doc',stats_only=True,refresh=True )
+        logger.info(f"Finished Flushing Data For {pth}")
         # for _,j in csv_df.iterrows():
         #     _id = j['id']
         #     # print(j.to_dict())
