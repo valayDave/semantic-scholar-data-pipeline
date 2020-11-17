@@ -27,8 +27,8 @@ ONTOLOGY_CSV_PATH = os.path.join(SAVE_PROCESSED_DATA_PATH,'PageRankCollateFlow')
 def rec_to_actions(df):
     import json
     for record in df.to_dict(orient="records"):
-        yield({'index': {'_id': record['id']}})
-        yield (json.dumps(record, default=int))
+        # yield({'index': {'_id': record['id']}})
+        yield (json.dumps(record))
 
 def sync_data():
     from elasticsearch import Elasticsearch
@@ -51,7 +51,7 @@ def sync_data():
         #     for _,row in csv_df.iterrows()
         # ]
         # es.bulk(rec_to_actions(csv_df))
-        response = es.bulk(index=INDEX, doc_type='doc', body=rec_to_actions(csv_df))
+        response = helpers.bulk(es,rec_to_actions(csv_df),chunk_size=100,index=INDEX, doc_type='doc', )
         print(f"Finished Flushing Data For {pth}")
         break
 
