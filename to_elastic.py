@@ -61,7 +61,7 @@ def sync_data():
             {
                 '_op_type': 'index',
                 '_index': INDEX,
-                '_type': 'doc',
+                # '_type': 'doc',
                 '_id': j['id'],
                 '_source':j.to_dict()
             }
