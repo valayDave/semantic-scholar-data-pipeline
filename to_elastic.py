@@ -7,19 +7,28 @@ from elasticsearch import Elasticsearch
 from elasticsearch import helpers
 
 
+INDEX="sem-scholar-index-2"
+TYPE= "record"
+
 SAVE_PROCESSED_DATA_PATH =os.path.join(mf_utils.data_path,'processed_data')
 ONTOLOGY_CSV_PATH = os.path.join(SAVE_PROCESSED_DATA_PATH,'PageRankCollateFlow') 
 
-def doc_generator(df):
-    df_iter = df.iterrows()
-    for index, document in df_iter:
-        yield {
-                "_index": 'sem-scholar-index',
-                "_type": "_doc",
-                "_id" : f"{document['id']}",
-                "_source": document.to_dict(),
-            }
-    raise StopIteration
+# def doc_generator(df):
+#     df_iter = df.iterrows()
+#     for index, document in df_iter:
+#         yield {
+#                 "_index": 'sem-scholar-index',
+#                 "_type": "_doc",
+#                 "_id" : f"{document['id']}",
+#                 "_source": document.to_dict(),
+#             }
+#     raise StopIteration
+
+def rec_to_actions(df):
+    import json
+    for record in df.to_dict(orient="records"):
+        yield ('{ "index" : { "_index" : "%s", "_type" : "%s" }}'% (INDEX, TYPE))
+        yield (json.dumps(record, default=int))
 
 def sync_data():
     from elasticsearch import Elasticsearch
@@ -31,7 +40,7 @@ def sync_data():
     s3_paths = [os.path.join(f,'ontology_processed.csv') for f in present_folders]
     for csv_df,pth in load_main_csvs(s3_paths):
         csv_df = clean_df(csv_df)
-        documents = csv_df.to_dict(orient='records')
+        # documents = csv_df.to_dict(orient='records')
         # data_docs = [
         #     {
         #         "_index": "sem-scholar-index",
@@ -41,7 +50,7 @@ def sync_data():
         #     }
         #     for _,row in csv_df.iterrows()
         # ]
-        helpers.bulk(es, documents, index= "sem-scholar-index",chunk_size=2000,stats_only=True,)
+        es.bulk(rec_to_actions(csv_df))
         print(f"Finished Flushing Data For {pth}")
         break
 
