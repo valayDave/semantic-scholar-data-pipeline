@@ -50,7 +50,7 @@ def sync_data():
             }
             for _,j in csv_df.iterrows()
         ]
-        response = helpers.bulk(es,actions,chunk_size=100,index=INDEX, doc_type='doc', )
+        response = helpers.bulk(es,actions,chunk_size=100,index=INDEX, doc_type='doc',stats_only=True )
         print(f"Finished Flushing Data For {pth}")
         break
 
