@@ -13,8 +13,8 @@ CONDA_DEPS = {
     'spacy-model-en_core_web_sm':'2.2.0'
 }
 import json
-MAX_WORKERS = 32
-MAX_MEMORY = 160000
+MAX_WORKERS = 8
+MAX_MEMORY = 16000
 
 SAVE_PROCESSED_DATA_PATH =os.path.join(mf_utils.data_path,'processed_data')
 PROCESSED_CS_PATH = os.path.join(SAVE_PROCESSED_DATA_PATH,'CSDataExtractorFlow') # Use Chunks for ease of Computations
