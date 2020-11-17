@@ -87,7 +87,15 @@ def clean_df(df):
             x['pdfUrls'] = []
         return x
     df1 = df.replace(np.nan, '', regex=True)
+    df1 = df1[['id','entities', 'magId',
+       'journalVolume', 'journalPages', 'pmid', 'fieldsOfStudy', 'year',
+       'outCitations', 's2Url', 's2PdfUrl', 'authors', 'journalName',
+       'paperAbstract', 'inCitations', 'pdfUrls', 'title', 'doi', 'sources',
+       'doiUrl', 'venue', 'num_out_ctn', 'num_in_ctn', 'num_fields',
+       'ontology_enhanced', 'ontology_semantic', 'ontology_syntactic',
+       'ontology_union', 'page_rank']]
     df1 = df1.apply(lambda x:parse_rows(x),axis=1)
+
     return df1
         
 
