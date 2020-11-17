@@ -40,21 +40,21 @@ def sync_data():
     s3_paths = [os.path.join(f,'ontology_processed.csv') for f in present_folders]
     for csv_df,pth in load_main_csvs(s3_paths):
         csv_df = clean_df(csv_df)
-        # actions = [
-        #     {
-        #         '_op_type': 'index',
-        #         '_index': INDEX,
-        #         '_type': 'doc',
-        #         '_id': j['id'],
-        #         **j.to_dict()
-        #     }
-        #     for _,j in csv_df.iterrows()
-        # ]
-        # success,_ = helpers.bulk(es,actions,chunk_size=100,index=INDEX, doc_type='doc',stats_only=True,refresh=True )
-        for _,j in csv_df.iterrows():
-            _id = j['id']
-            # print(j.to_dict())
-            es.index(index=INDEX,doc_type='_doc',id=_id,body=j.to_dict())
+        actions = [
+            {
+                '_op_type': 'index',
+                '_index': INDEX,
+                '_type': 'doc',
+                '_id': j['id'],
+                '_source':j.to_dict()
+            }
+            for _,j in csv_df.iterrows()
+        ]
+        success,_ = helpers.bulk(es,actions,chunk_size=100,index=INDEX, doc_type='doc',stats_only=True,refresh=True )
+        # for _,j in csv_df.iterrows():
+        #     _id = j['id']
+        #     # print(j.to_dict())
+        #     es.index(index=INDEX,doc_type='_doc',id=_id,body=j.to_dict())
 
         print(f"Finished Flushing Data For {pth}")
         break
