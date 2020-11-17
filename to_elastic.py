@@ -53,7 +53,7 @@ def sync_data():
         # success,_ = helpers.bulk(es,actions,chunk_size=100,index=INDEX, doc_type='doc',stats_only=True,refresh=True )
         for _,j in csv_df.iterrows():
             _id = j['id']
-            es.index(index='nodes',doc_type='external',id=_id,body=j.to_dict())
+            es.index(index=INDEX,doc_type='_doc',id=_id,body=j.to_dict())
 
         print(f"Finished Flushing Data For {pth}")
         break
