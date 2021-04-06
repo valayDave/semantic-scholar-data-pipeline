@@ -85,3 +85,5 @@ The flow are follow the following pattern:
 - Cleanup Readmes
 - Add More information about running flows properly. 
 - Create flow dependency graph
+- Replace Memory Hogging Networkx with https://github.com/VHRanger/CSRGraph for PageRank
+- 
