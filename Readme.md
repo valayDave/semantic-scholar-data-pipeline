@@ -79,3 +79,9 @@ The flow are follow the following pattern:
 ### mf_utils.py
 
 - Utility module for data-syncing/s3 looksup and Dataroot path fixing when creating the flows. 
+
+## TODO 
+
+- Cleanup Readmes
+- Add More information about running flows properly. 
+- Create flow dependency graph
